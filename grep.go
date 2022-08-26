@@ -36,7 +36,6 @@ type Match struct {
 
 // Grep read file and return matched lines.
 // If opts is nil, default options will be used.
-// The result is a map, key is line number, value is line content.
 func Grep(file string, pattern string, opts *Options) ([]*Match, error) {
 	b, err := os.ReadFile(file)
 	if err != nil {
