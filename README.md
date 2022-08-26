@@ -21,8 +21,8 @@ matches, err := grep.Grep("target_file.txt", fmt.Sprintf("(?i)%s", pattern), opt
 
 for _, m := range matches {
   println(fmt.Sprintf("Matched Line: %s", m.Line))
-  println(fmt.Sprintf("Line Number: %s", m.LineNumber))
-  println(fmt.Sprintf("Start Line: %s", m.StartLine))
+  println(fmt.Sprintf("Line Number: %d", m.LineNumber))
+  println(fmt.Sprintf("Start Line: %d", m.StartLine))
 }
 ```
 
