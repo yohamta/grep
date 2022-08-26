@@ -17,7 +17,7 @@ opts := &grep.Options{
   After:    2,
 }
 
-matches, err := grep.Grep(fn, fmt.Sprintf("(?i)%s", pattern), opts)
+matches, err := grep.Grep("target_file.txt", fmt.Sprintf("(?i)%s", pattern), opts)
 
 for _, m := range matches {
   println(fmt.Sprintf("Matched Line: %s", m.Line))
