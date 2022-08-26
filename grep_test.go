@@ -105,8 +105,8 @@ func TestGrep(t *testing.T) {
 		},
 		{
 			Name:    "no match",
-			File:    path.Join(dir, "no match text"),
-			Pattern: "abc-----",
+			File:    path.Join(dir, "test.txt"),
+			Pattern: "no match text",
 			IsErr:   true,
 		},
 		{
