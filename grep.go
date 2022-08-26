@@ -47,11 +47,9 @@ func Grep(file string, pattern string, opts *Options) ([]*Match, error) {
 	if pattern == "" {
 		return nil, ErrEmptyPattern
 	}
-	var reg *regexp.Regexp = nil
-	if opts.IsRegexp {
-		if reg, err = regexp.Compile(pattern); err != nil {
-			return nil, err
-		}
+	matcher, err := getMatcher(pattern, opts)
+	if err != nil {
+		return nil, err
 	}
 	scanner := bufio.NewScanner(bytes.NewReader(b))
 	ret := []*Match{}
@@ -61,13 +59,7 @@ func Grep(file string, pattern string, opts *Options) ([]*Match, error) {
 	for scanner.Scan() {
 		t := scanner.Text()
 		lines = append(lines, t)
-		flag := false
-		if opts.IsRegexp && reg.MatchString(t) {
-			flag = true
-		} else if strings.Contains(t, pattern) {
-			flag = true
-		}
-		if flag {
+		if matcher.Match(t) {
 			matches = append(matches, i)
 		}
 		i++
@@ -86,4 +78,45 @@ func Grep(file string, pattern string, opts *Options) ([]*Match, error) {
 		})
 	}
 	return ret, nil
+}
+
+func getMatcher(pattern string, opts *Options) (Matcher, error) {
+	if opts.IsRegexp {
+		reg, err := regexp.Compile(pattern)
+		if err != nil {
+			return nil, err
+		}
+		return &regexpMatcher{
+			Regexp: reg,
+		}, nil
+	}
+	return &simpleMatcher{
+		Pattern: pattern,
+	}, nil
+}
+
+// Matcher is the interface for matching lines with given pattern.
+type Matcher interface {
+	// Match returns true if line matches pattern.
+	Match(line string) bool
+}
+
+type regexpMatcher struct {
+	Regexp *regexp.Regexp
+}
+
+var _ Matcher = (*regexpMatcher)(nil)
+
+func (rm *regexpMatcher) Match(line string) bool {
+	return rm.Regexp.MatchString(line)
+}
+
+type simpleMatcher struct {
+	Pattern string
+}
+
+var _ Matcher = (*simpleMatcher)(nil)
+
+func (rm *simpleMatcher) Match(line string) bool {
+	return strings.Contains(line, rm.Pattern)
 }
