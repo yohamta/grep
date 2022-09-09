@@ -25,6 +25,7 @@ type Options struct {
 	IsRegexp bool
 	Before   int
 	After    int
+	Matcher  Matcher
 }
 
 // Match contains matched line number and line content.
@@ -47,9 +48,11 @@ func Grep(file string, pattern string, opts *Options) ([]*Match, error) {
 	if pattern == "" {
 		return nil, ErrEmptyPattern
 	}
-	matcher, err := defaultMatcher(pattern, opts)
-	if err != nil {
-		return nil, err
+	matcher := opts.Matcher
+	if matcher == nil {
+		if matcher, err = defaultMatcher(pattern, opts); err != nil {
+			return nil, err
+		}
 	}
 	scanner := bufio.NewScanner(bytes.NewReader(b))
 	ret := []*Match{}
