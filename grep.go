@@ -47,7 +47,7 @@ func Grep(file string, pattern string, opts *Options) ([]*Match, error) {
 	if pattern == "" {
 		return nil, ErrEmptyPattern
 	}
-	matcher, err := getMatcher(pattern, opts)
+	matcher, err := defaultMatcher(pattern, opts)
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,7 @@ func Grep(file string, pattern string, opts *Options) ([]*Match, error) {
 	return ret, nil
 }
 
-func getMatcher(pattern string, opts *Options) (Matcher, error) {
+func defaultMatcher(pattern string, opts *Options) (Matcher, error) {
 	if opts.IsRegexp {
 		reg, err := regexp.Compile(pattern)
 		if err != nil {
