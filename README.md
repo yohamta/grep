@@ -31,9 +31,9 @@ for _, m := range matches {
 You can implement the Matcher interface and pass it through the `grep.Option.Mather` field.
 
 ```go
-// Matcher is the interface for matching lines with given pattern.
+// Matcher is the interface for matching lines.
 type Matcher interface {
-	// Match returns true if line matches pattern.
+	// Match returns true if the given line matches.
 	Match(line string) bool
 }
 ```

@@ -18,6 +18,12 @@ var (
 	ErrEmptyPattern = errors.New("empty pattern")
 )
 
+// Matcher is the interface for matching lines.
+type Matcher interface {
+	// Match returns true if the given line matches.
+	Match(line string) bool
+}
+
 // Options represents grep options.
 // If IsRegexp is true, the pattern is treated as a regular expression.
 // Before and After are the number of lines before and after the matched line.
@@ -96,12 +102,6 @@ func defaultMatcher(pattern string, opts *Options) (Matcher, error) {
 	return &simpleMatcher{
 		Pattern: pattern,
 	}, nil
-}
-
-// Matcher is the interface for matching lines with given pattern.
-type Matcher interface {
-	// Match returns true if line matches pattern.
-	Match(line string) bool
 }
 
 type regexpMatcher struct {
