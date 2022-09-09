@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/yohamta/grep/branch/main/graph/badge.svg)](https://codecov.io/gh/yohamta/grep)
 [![GoDoc](https://pkg.go.dev/badge/github.com/yohamta/grep)](https://pkg.go.dev/github.com/yohamta/grep)
 
-The grep searches given pattern in given file and returns matched lines.
+The grep searches given pattern in a given file and returns matched lines, like the grep command in Unix/Linux.
 
 ## Usage
 
@@ -33,8 +33,8 @@ You can implement the Matcher interface and pass it through the `grep.Option.Mat
 ```go
 // Matcher is the interface for matching lines.
 type Matcher interface {
-	// Match returns true if the given line matches.
-	Match(line string) bool
+  // Match returns true if the given line matches.
+  Match(line string) bool
 }
 ```
 
