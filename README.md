@@ -26,6 +26,18 @@ for _, m := range matches {
 }
 ```
 
+## Custom Matcher
+
+You can implement the Matcher interface and pass it through the `grep.Option.Mather` field.
+
+```go
+// Matcher is the interface for matching lines with given pattern.
+type Matcher interface {
+	// Match returns true if line matches pattern.
+	Match(line string) bool
+}
+```
+
 # License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
